@@ -21,12 +21,13 @@ CAT9554GPIOOutputPin = io_ns.class_('CAT9554GPIOOutputPin', GPIOOutputPin)
 
 CONFIG_SCHEMA = cv.Schema({
     vol.Required(CONF_ID): cv.declare_variable_id(pins.CAT9554Component),
+    vol.Required('irq'): pins.input_pin,
     vol.Optional(CONF_ADDRESS, default=0x20): cv.i2c_address,
 }).extend(cv.COMPONENT_SCHEMA.schema)
 
 
 def to_code(config):
-    rhs = App.make_cat9554_component(config[CONF_ADDRESS])
+    rhs = App.make_cat9554_component(config[CONF_ADDRESS], config['irq'])
     var = Pvariable(config[CONF_ID], rhs)
     setup_component(var, config)
 
